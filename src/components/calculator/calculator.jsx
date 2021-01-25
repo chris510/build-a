@@ -1,53 +1,18 @@
-import { useState, useEffect } from 'react';
-import './calculator.scss';
+import { useState } from 'react';
 import numeral from 'numeral';
+import { generateCalculatorNums, calculatorOperations } from './calculator.utils';
+import Button from '../button/button';
 
 const OPERATIONS = ['+', '-', '*', '/'];
 const MISC = ['clear', 'delete', '='];
-const generateCalculatorNums = () => {
-    const nums = [];
-    for (let i = 1; i <= 9; i++) {
-        nums.push(i);
-    }
-    return nums;
-}
-
-const calculatorOperations = {
-    '+': (firstVal, secondVal) => firstVal + secondVal,
-    '-': (firstVal, secondVal) => firstVal - secondVal,
-    '*': (firstVal, secondVal) => firstVal * secondVal,
-    '/': (firstVal, secondVal) => numeral(firstVal / secondVal).format('(.00)'),
-}
-
-// const useThrottle = (value, delay) => {
-//     const [throttledEvent, setThrottledEvent] = useState(value);
-
-//     useEffect(() => {
-//         const handler = setTimeout(() => {
-//             console.log('hellooo', value);
-//             setThrottledEvent(value);
-//         }, delay)
-//         return () => {
-//             clearTimeout(handler)
-//         };
-//     }, [value, delay])
-//     return throttledEvent;
-// }
 
 const Calculator = () => {
     const [firstVal, setFirstVal] = useState('');
     const [secondVal, setSecondVal] = useState('');
     const [mathOperation, setMathOperation] = useState('');
-    // const [miscOperation, setMiscOperation] = useState('');
     const [newResult, setNewResult] = useState('');
     const [savedResults, setSavedResults] = useState([]);
     const [wholeCalculation, setWholeCalculation] = useState('');
-    // const clickEventOp = useThrottle(miscOperation, 1000);
-    // useEffect(() => {
-    //     if (clickEventOp) {
-    //         performMiscOperation(clickEventOp);
-    //     }
-    // }, [clickEventOp])
 
     const setVal = (num) => !mathOperation ? setFirstVal(firstVal + num) : setSecondVal(secondVal + num);
 
@@ -62,8 +27,8 @@ const Calculator = () => {
             numeral(secondVal).value()
         );
         setWholeCalculation(firstVal + mathOperation + secondVal);
-        cacheResults(result);
         setNewResult(result)
+        cacheResults(result);
         setFirstVal(result);
         setMathOperation('');
         setSecondVal('');
@@ -89,13 +54,11 @@ const Calculator = () => {
 
     const deleteCalc = () => {
         if (secondVal) {
-            // setMiscOperation('');
             return setSecondVal(secondVal.slice(0, secondVal.length - 1));
         } else if (mathOperation) {
             return setMathOperation('');
         } else if (firstVal) {
             const firstValLen = firstVal.length;
-            // setMiscOperation('');
             return setFirstVal(firstValLen === 1 ? '' : firstVal.slice(0, firstValLen - 1));
         }
     }
@@ -113,32 +76,29 @@ const Calculator = () => {
             </div>
             <div className="calculator__num-btns">
                 {generateCalculatorNums().map((num, idx) => (
-                    <button
+                    <Button
                         key={idx}
-                        onClick={() => setVal(num)}
-                    >
-                        {num}
-                    </button>
+                        handleOnClick={() => setVal(num)}
+                        text ={num}
+                    />
                 ))}
             </div>
             <div className="calculator__op-btns">
                 {OPERATIONS.map((operation, idx) => (
-                    <button
+                    <Button
                         key={idx}
-                        onClick={() => setMathOperation(operation)}
-                    >
-                        {operation}
-                    </button>
+                        handleOnClick={() => setMathOperation(operation)}
+                        text={operation}
+                    />
                 ))}
             </div>
             <div className="calculator__misc-btns">
                 {MISC.map((misc, idx) => (
-                    <button
+                    <Button
                         key={idx}
-                        onClick={() => performMiscOperation(misc)}
-                    >
-                        {misc}
-                    </button>
+                        handleOnClick={() => performMiscOperation(misc)}
+                        text={misc}
+                    />
                 ))}
             </div>
             <ul className="calculator__saved-results">
