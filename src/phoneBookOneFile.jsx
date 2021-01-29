@@ -116,7 +116,7 @@ const PhoneBookForm = () => {
   const [state, dispatch] = useReducer(PhoneBookEntryReducer, PhoneBookEntryInitialState);
   const { firstName, lastName, phone } = state;
   const { users, setUsers } = useContext(PhoneBookContext);
-
+  console.log(firstName);
   const isAllEntriesFilled = Boolean(firstName) && Boolean(lastName) && Boolean(phone);
   const handleFieldOnChange = (e) => {
     const value = e.target.value;

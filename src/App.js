@@ -3,13 +3,15 @@ import Calculator from './components/calculator/calculator';
 // import PhoneBook from './components/phonebook/phonebook';
 import PhoneBook from './phoneBookOneFile';
 import TicTacToe from './components/ticTacToe/ticTacToe';
+import AutoComplete from './components/autocomplete/autocomplete';
 
 const App = () => {
     return (
 		<div className="App">
 			<Calculator />
 			<PhoneBook />
-			<TicTacToe />
+			<AutoComplete />
+			{/* <TicTacToe /> */}
 		</div>
     );
 }
